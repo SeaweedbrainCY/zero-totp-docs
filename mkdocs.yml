@@ -41,3 +41,7 @@ plugins:
   - search
 repo_url: https://github.com/SeaweedbrainCY/zero-totp
 repo_name: SeaweedbrainCY/zero-totp
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
