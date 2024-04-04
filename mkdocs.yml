@@ -24,6 +24,7 @@ theme:
         name: Switch to system preference
   features:
     - navigation.tracking
+    - navigation.instant
     - navigation.tabs
     - navigation.path
     - search.suggest
