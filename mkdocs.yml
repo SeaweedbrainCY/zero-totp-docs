@@ -40,3 +40,12 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+copyright: Zero-TOTP documentation released under GPL-3.0 Licence. Zero-TOTP is a project of Nathan Stchepinsky © 2023. All rights reserved.
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      links: https://github.com/SeaweedbrainCY/zero-totp
+    - icon: fontawesome/brands/docker
+      links: https://hub.docker.com/u/seaweedbrain
+    
