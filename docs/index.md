@@ -40,7 +40,7 @@ The goal is to provide a growing documentation of Zero-TOTP web application impl
 You can improve the documentation by opening a PR in the [github repo](https://github.com/SeaweedbrainCY/zero-totp-docs)
 
 ## Project progress
-*Updated 23 jan. 2024*
+*Updated 10 apr. 2024*
 > [!TIP]
 > As of today, all focus is on the web app (main and Rescue) and their self-hosted version. The iOS app and the CLI app are not in development for the moment.
 
