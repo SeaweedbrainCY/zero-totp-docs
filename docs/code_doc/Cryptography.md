@@ -1,7 +1,3 @@
----
-hide:
-  - navigation
----
 # Cryptography
 A summary of the cryptographic flows used in Zero-TOTP
 
