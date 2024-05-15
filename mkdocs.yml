@@ -3,20 +3,6 @@ site_name: Zero-TOTP Docs
 theme:
   name: material
   palette:
-
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default 
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light preference
   features:
     - navigation.tracking
     - navigation.instant
@@ -26,6 +12,9 @@ theme:
     - search.highlight
     - search.share
     - social
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
   logo: assets/logo.png
   favicon: assets/favicon.ico
   language: en
@@ -40,6 +29,17 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - def_list
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
 copyright: Zero-TOTP documentation released under GPL-3.0 Licence. Zero-TOTP is a project of Nathan Stchepinsky © 2023. All rights reserved.
 
 extra:
@@ -48,4 +48,16 @@ extra:
       links: https://github.com/SeaweedbrainCY/zero-totp
     - icon: fontawesome/brands/docker
       links: https://hub.docker.com/u/seaweedbrain
-    
+nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
+  - Home:
+    - index.md
+  - Self-host:
+    - self_host/Setup.md
+  - Contributing:
+    - contrib/Requirements.md
+    - contrib/Setup.md
+  - Code documentation:
+    - code_doc/api.md
+    - code_doc/Cryptography.md
+
+  
