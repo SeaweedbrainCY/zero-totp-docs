@@ -44,8 +44,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: <root_password> #(1)
       MYSQL_DATABASE: zero_totp #(2)
-      MYSQL_USER: <mysql_user> #(1)
-      MYSQL_PASSWORD: <mysql_user_password> #(1)
+      MYSQL_USER: <mysql_user> #(3)
+      MYSQL_PASSWORD: <mysql_user_password> #(4)
     volumes:
       - ./data:/var/lib/mysql
     ports:
@@ -54,3 +54,19 @@ services:
 
 1. :pencil: Change this value
 2. :warning: If you change this value, report it in your api config file
+3. :pencil: Change this value
+4. :pencil: Change this value
+
+## 4. Install, configure and the run the API 
+### 4.1 Installation 
+
+At the root of the project, you will find the `Makefile` the you can use to install and run the project.
+
+To install the api dependencies, run : 
+```bash
+make install_frontend
+```
+### 4.2 Configuration
+The API configuration is defined in the file `api/config/config.yml`. You need to **create** and **modify** the default config file in order to properly run the API.
+
+You can find the default configuration file in `api/config/config-example.yml` or at [https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/dev/api/config/config-example.yml](https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/dev/api/config/config-example.yml).
