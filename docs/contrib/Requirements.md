@@ -21,9 +21,19 @@ The API of Zero-TOTP is built with Python. To install Python, follow the [offici
 
 !!! note
 
-    **Python 3.11 is the only version tested on this project and should be the only one used to run Zero-TOTP.** Any previous or later version of Python 3 may not work.
+    **Python 3.12 is the only version tested on this project and should be the only one used to run Zero-TOTP.** Any previous or later version of Python 3 may not work.
 
-### 2.3. Make
+### 2.4. Python build packages 
+Some python dependencies will require build packages to be installed.
+On a Debian system, you can install them with apt : 
+```shell
+
+
+
+
+
+
+### 2.4. Make
 Make is used to easily install and run the project locally. 
 
 With apt : 
@@ -34,7 +44,7 @@ With homebrew :
 ```shell
 brew install make
 ```
-### 2.4. Docker (recommended)
+### 2.5. Docker (optional, recommended)
 Zero-TOTP is distributed as a docker image. When running the project locally, a mariadb container is recommended to run the database. 
 
 Moreover, to test the build of the project, docker is required.
