@@ -1,4 +1,18 @@
-# Setup
+# Zero-TOTP installation
+Zero-TOTP supports installation via Docker. This guide will help you to set up Zero-TOTP on your server.
+## Requirements 
+- Docker 
+
+## Installation via docker 
+### Docker compose (recommended)
+Create the following `docker-compose.yml` : 
+```yaml title="docker-compose.yml"
+
+```
+
+
+### Docker run
+
 ## Setting a reverse proxy
 
 Setting up a reverse proxy is mandatory to expose Zero-TOTP's frontend and API. 
