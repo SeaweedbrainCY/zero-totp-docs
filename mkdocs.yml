@@ -3,6 +3,8 @@ site_name: Zero-TOTP Docs
 theme:
   name: material
   palette:
+    primary: custom
+
   features:
     - navigation.tracking
     - navigation.instant
@@ -54,8 +56,9 @@ extra:
 nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
   - Home:
     - index.md
-  - Self-host:
-    - self_host/Setup.md
+  - Self-hosting:
+    - self_host/install.md
+    - self_host/setup.md
   - Contributing:
     - contrib/Requirements.md
     - contrib/Setup.md
@@ -63,4 +66,5 @@ nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
     - code_doc/api.md
     - code_doc/Cryptography.md
 
-  
+extra_css:
+  - stylesheets/extra.css
