@@ -10,6 +10,7 @@ theme:
     - navigation.instant
     - navigation.tabs
     - navigation.path
+    - navigation.footer
     - search.suggest
     - search.highlight
     - search.share
@@ -17,10 +18,12 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
+    - content.tooltips
   logo: assets/logo.png
   favicon: assets/favicon.ico
   language: en
   icon:
+    annotation: material/plus-circle
     repo: fontawesome/brands/github
 plugins:
   - privacy
@@ -33,6 +36,9 @@ markdown_extensions:
   - pymdownx.superfences
   - def_list
   - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -53,12 +59,16 @@ extra:
       links: https://github.com/SeaweedbrainCY/zero-totp
     - icon: fontawesome/brands/docker
       links: https://hub.docker.com/u/seaweedbrain
+  version:
+    provider: mike
 nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
   - Home:
     - index.md
   - Self-hosting:
     - self_host/install.md
     - self_host/setup.md
+    - self_host/customization.md
+    - self_host/backup.md
   - Contributing:
     - contrib/Requirements.md
     - contrib/Setup.md
