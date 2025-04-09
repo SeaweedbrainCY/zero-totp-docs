@@ -1,3 +1,7 @@
+---
+title: Installation
+---
+
 # Zero-TOTP installation
 Zero-TOTP supports installation via Docker. This guide will help you to set up Zero-TOTP on your server.
 ## Requirements 

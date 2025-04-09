@@ -1,3 +1,7 @@
+---
+title: Setup
+---
+
 # Setup your Zero-TOTP instance
 You'll have to set up your Zero-TOTP instance to make it work. Some of the following steps are mandatory, others are optional and can be used to customize your instance.
 

@@ -1,4 +1,8 @@
-# Backup your database
+---
+title: Database backup
+---
+
+# Zero-TOTP database backup and restore
 Backing up your database is important to prevent data loss. You can use the `mariadb-dump` utility to backup your database.
 
 ## Backup your database
