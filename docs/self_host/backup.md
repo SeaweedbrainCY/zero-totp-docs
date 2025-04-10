@@ -27,7 +27,7 @@ Backing up your database is important to prevent data loss. You can use the `mar
 - The backup file will be named db_backup_\*.log 
 - The backup file will be saved in the `/var/lib/mysql` directory of the database container which is a mounted volume in your host. Check the mount point in your `docker-compose.yml` file or the `docker run` command to find the backup file. 
 
-**It is highly recommended to copy the backups files into an external filesystem and very they are not empty !**
+**It is highly recommended to copy the backups files into an external filesystem and verify they are not empty !**
 
 
 ## Restore a database backup 
