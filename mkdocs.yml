@@ -1,6 +1,6 @@
 
 site_name: Zero-TOTP Docs
-site_url: https://docs.zero-totp.com/
+site_url: 'https://docs.zero-totp.com/'
 theme:
   name: material
   custom_dir: overrides
@@ -64,6 +64,7 @@ extra:
   version:
     provider: mike
     alias: true
+    default: latest
 nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
   - Home:
     - index.md
