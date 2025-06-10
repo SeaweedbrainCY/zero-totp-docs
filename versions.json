@@ -3,7 +3,13 @@
     "version": "1.4",
     "title": "1.4",
     "aliases": [
-      "v1.4",
+      "v1.4"
+    ]
+  },
+  {
+    "version": "v1.6",
+    "title": "v1.6",
+    "aliases": [
       "latest"
     ]
   }
