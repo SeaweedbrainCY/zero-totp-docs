@@ -61,6 +61,7 @@ extra:
       links: https://hub.docker.com/u/seaweedbrain
   version:
     provider: mike
+    alias: true
 nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
   - Home:
     - index.md
