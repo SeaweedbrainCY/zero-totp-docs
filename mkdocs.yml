@@ -3,33 +3,27 @@ site_name: Zero-TOTP Docs
 theme:
   name: material
   palette:
+    primary: custom
 
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default 
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light preference
   features:
     - navigation.tracking
     - navigation.instant
     - navigation.tabs
     - navigation.path
+    - navigation.footer
     - search.suggest
     - search.highlight
     - search.share
     - social
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tooltips
   logo: assets/logo.png
   favicon: assets/favicon.ico
   language: en
   icon:
+    annotation: material/plus-circle
     repo: fontawesome/brands/github
 plugins:
   - privacy
@@ -40,3 +34,47 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - def_list
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+copyright: Zero-TOTP documentation released under GPL-3.0 Licence. Zero-TOTP is a project of Nathan Stchepinsky © 2023. All rights reserved.
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      links: https://github.com/SeaweedbrainCY/zero-totp
+    - icon: fontawesome/brands/docker
+      links: https://hub.docker.com/u/seaweedbrain
+  version:
+    provider: mike
+nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
+  - Home:
+    - index.md
+  - Self-hosting:
+    - self_host/install.md
+    - self_host/setup.md
+    - self_host/customization.md
+    - self_host/backup.md
+  - Contributing:
+    - contrib/Requirements.md
+    - contrib/Setup.md
+  - Code documentation:
+    - code_doc/api.md
+    - code_doc/Cryptography.md
+
+extra_css:
+  - stylesheets/extra.css
