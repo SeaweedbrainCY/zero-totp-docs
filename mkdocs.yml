@@ -1,7 +1,9 @@
 
 site_name: Zero-TOTP Docs
+site_url: https://docs.zero-totp.com/
 theme:
   name: material
+  custom_dir: overrides
   palette:
     primary: custom
 

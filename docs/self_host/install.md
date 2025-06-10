@@ -14,7 +14,7 @@ Create the following `docker-compose.yml` :
 services:
   frontend:
     container_name: frontend
-    image: seaweedbrain/zero-totp-frontend:latest
+    image: ghcr.io/seaweedbraincy/zero-totp-frontend:1.6.3
     user: "101:101"
     ports:
       - 4200:80
@@ -24,13 +24,15 @@ services:
 
   api:
     container_name: api
-    image: seaweedbrain/zero-totp-api:latest
-    user: '1001:1001'
+    image: ghcr.io/seaweedbraincy/zero-totp-api:1.6.3
+    environment:
+      USER_UID: 1001
+      USER_GID: 1001
     ports:
       - 8080:8080
     volumes:
       - ./api/secret:/api/secret
-      - ./api/log:/var/log/api
+      - ./api/logs:/api/logs
       - ./api/config:/api/config
     restart: always
 
@@ -56,10 +58,10 @@ services:
 Run the following commands to start the 3 Zero-TOTP components (frontend, api, database) : 
 ```bash
 # Frontend
-docker run --name frontend -u 101:101 -p 4200:80 -v ./frontend/log:/var/log/nginx --restart always seaweedbrain/zero-totp-frontend:latest
+docker run --name frontend -u 101:101 -p 4200:80 -v ./frontend/log:/var/log/nginx --restart always ghcr.io/seaweedbraincy/zero-totp-frontend:1.6.3
 
 # API
-docker run --name api -u 1001:1001 -p 8080:8080 -v ./api/secret:/api/secret -v ./api/log:/var/log/api -v ./api/config:/api/config --restart always seaweedbrain/zero-totp-api:latest
+docker run --name api -p 8080:8080 -v ./api/secret:/api/secret -e USER_UID=1001 -e USER_GID=1001 -v ./api/log:/api/logs -v ./api/config:/api/config --restart always ghcr.io/seaweedbraincy/zero-totp-api:1.6.3 
 
 # Database
 docker run -e MYSQL_ROOT_PASSWORD=CHANGE_ME -e MYSQL_DATABASE=zero_totp -e MYSQL_USER=api -e MYSQL_PASSWORD=CHANGE_ME --name database -p 3306:3306 -v ./database/data:/var/lib/mysql -v ./database/config:/etc/mysql --restart always mariadb:latest
