@@ -64,7 +64,6 @@ extra:
   version:
     provider: mike
     alias: true
-    default: latest
 nav: #https://github.com/squidfunk/mkdocs-material/discussions/4699
   - Home:
     - index.md
