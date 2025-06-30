@@ -1,16 +1,29 @@
 ---
-title: Installation
+date: '2025-06-30T00:48:44Z'
+draft: true
+title: 'Install Zero-TOTP'
+linkTitle: Installation
+weight: 1
+cascade:
+  type: docs
 ---
 
-# Zero-TOTP installation
 Zero-TOTP supports installation via Docker. This guide will help you to set up Zero-TOTP on your server.
+
 ## Requirements 
+To self-host Zero-TOTP, you need the following components:
 - Docker 
+- Docker Compose (optional, but recommended for easier management)
 
 ## Installation via docker 
 ### Docker compose (recommended)
 Create the following `docker-compose.yml` : 
-```yaml title="docker-compose.yml" linenums="1"
+```python
+test
+```
+
+
+```yaml {filename="docker-compose.yml"}
 services:
   frontend:
     container_name: frontend

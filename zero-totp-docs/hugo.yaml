@@ -1,0 +1,42 @@
+baseURL: https://docs.zero-totp.com
+languageCode: en-us
+title: Zero TOTP Docs
+enableInlineShortcodes: true
+module:
+  imports:
+    - path: github.com/imfing/hextra
+
+menu:
+  main:
+    - identifier: self-host
+      name: Self-hosting
+      pageRef: /self-host
+      weight: 1
+    - identifier: code_doc
+      name: Documentation
+      pageRef: /doc
+      weight: 2
+    - name: Search
+      weight: 3
+      params:
+        type: search
+    - name: GitHub
+      weight: 4
+      url: "https://github.com/seaweedbraincy/zero-totp"
+      params:
+        icon: github
+    - identifier: v1.7
+      name: v1.7 
+      url: https://github.com/seaweedbraincy/zero-totp/versions/v1.7/
+      name: v1.7 (latest)
+
+params:
+  highlight:
+    copy:
+      enable: true
+      # hover | always
+      display: hover
+  theme:
+    # light | dark | system
+    default: system
+    displayToggle: true
