@@ -12,15 +12,10 @@ Zero-TOTP supports installation via Docker. This guide will help you to set up Z
 
 ## Requirements 
 To self-host Zero-TOTP, you need the following components:
-- Docker 
-- Docker Compose (optional, but recommended for easier management)
+- Docker (and docker compose for easier management)
 
-## Installation via docker 
-### Docker compose (recommended)
+## Installation via docker-compose
 Create the following `docker-compose.yml` : 
-```python
-test
-```
 
 
 ```yaml {filename="docker-compose.yml"}
@@ -52,10 +47,10 @@ services:
 
   database:
     environment:
-      MYSQL_ROOT_PASSWORD: ## CHANGE_ME
+      MYSQL_ROOT_PASSWORD: weak_password ## CHANGE_ME
       MYSQL_DATABASE: zero_totp
       MYSQL_USER: api
-      MYSQL_PASSWORD: ## CHANGE_ME
+      MYSQL_PASSWORD: weak_password ## CHANGE_ME
     image:  mariadb:latest
     container_name: database
     ports:
@@ -66,19 +61,10 @@ services:
     restart: always
 ```
 
+> [!warning]
+> Make sure to change the `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` to a strong password.
 
-### Docker run
-Run the following commands to start the 3 Zero-TOTP components (frontend, api, database) : 
-```bash
-# Frontend
-docker run --name frontend -u 101:101 -p 4200:80 -v ./frontend/log:/var/log/nginx --restart always ghcr.io/seaweedbraincy/zero-totp-frontend:1.6.3
 
-# API
-docker run --name api -p 8080:8080 -v ./api/secret:/api/secret -e USER_UID=1001 -e USER_GID=1001 -v ./api/log:/api/logs -v ./api/config:/api/config --restart always ghcr.io/seaweedbraincy/zero-totp-api:1.6.3 
-
-# Database
-docker run -e MYSQL_ROOT_PASSWORD=CHANGE_ME -e MYSQL_DATABASE=zero_totp -e MYSQL_USER=api -e MYSQL_PASSWORD=CHANGE_ME --name database -p 3306:3306 -v ./database/data:/var/lib/mysql -v ./database/config:/etc/mysql --restart always mariadb:latest
-```
 
 ## Setting a reverse proxy
 

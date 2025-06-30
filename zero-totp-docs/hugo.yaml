@@ -26,10 +26,20 @@ menu:
       params:
         icon: github
     - identifier: v1.7
-      name: v1.7 
-      url: https://github.com/seaweedbraincy/zero-totp/versions/v1.7/
       name: v1.7 (latest)
-
+      url: https://github.com/seav1.7
+markup:
+  highlight:
+    noClasses: false
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      passthrough:
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+        enable: true
 params:
   highlight:
     copy:
