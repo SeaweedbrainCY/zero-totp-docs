@@ -1,6 +1,6 @@
 ---
 date: '2025-06-30T00:54:51Z'
-draft: true
+
 title: 'Setup the Zero-TOTP API'
 linkTitle: 2 - API Setup 
 weight: 4

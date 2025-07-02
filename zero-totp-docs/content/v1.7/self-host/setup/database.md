@@ -1,7 +1,7 @@
 
 ---
 date: '2025-06-30T00:54:51Z'
-draft: true
+
 title: 'Setup the Zero-TOTP database'
 linkTitle: 3 - Database Setup
 weight: 5

@@ -1,6 +1,6 @@
 ---
 date: '2025-06-30T00:54:51Z'
-draft: true
+
 title: 'Setup your Zero-TOTP instance'
 linkTitle: Setup
 weight: 2
