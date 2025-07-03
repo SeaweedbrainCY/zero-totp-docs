@@ -32,6 +32,10 @@ jobs:
           working-directory: ./zero-totp-docs
           run: |
             hugo --minify --gc --cleanDestinationDir --destination ../docs
+
+        - name: Add CNAME file
+          run: |
+            echo "docs.zero-totp.com" > ./docs/CNAME
         
         - name: Push to gh-pages branch
           run: |
