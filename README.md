@@ -12,4 +12,5 @@ Contributions on this docs are very welcome. A PR must be open before any additi
 ## Licenses 
 Zero-TOTP's code and its docs are licensed under MIT license. 
 
-This documentation is from [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+This documentation is Powered by [Hextra](https://github.com/imfing/hextra) and [Hugo](https://gohugo.io/). Generously hosted by [GitHub](https://github.com/).
+
