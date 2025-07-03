@@ -31,7 +31,7 @@ jobs:
         - name: Build documentation
           working-directory: ./zero-totp-docs
           run: |
-            hugo --minify --gc --cleanDestinationDir --destination production/
+            hugo --minify --gc --cleanDestinationDir --destination /docs
         
         - name: Push to gh-pages branch
           run: |
