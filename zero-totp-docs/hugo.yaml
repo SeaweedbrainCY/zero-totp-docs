@@ -29,7 +29,7 @@ menu:
         icon: github
     - identifier: v1.7
       name: v1.7 (latest)
-      url: https://github.com/seav1.7
+      url: https://docs.zero-totp.com/v1.7/
 markup:
   highlight:
     noClasses: false
