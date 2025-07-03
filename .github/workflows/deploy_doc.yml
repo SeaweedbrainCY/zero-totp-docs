@@ -21,6 +21,12 @@ jobs:
             echo "Current short version: $current_short_version"
             cp -r $current_short_version/ latest/
             cp $current_short_version/_index.md _index.md
+
+        - name: Install Hugo
+          uses: peaceiris/actions-hugo@v2
+          with:
+              hugo-version: 'latest'
+              extended: true
         
         - name: Build documentation
           working-directory: ./zero-totp-docs
