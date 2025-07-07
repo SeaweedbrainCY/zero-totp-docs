@@ -27,9 +27,9 @@ menu:
       url: "https://github.com/seaweedbraincy/zero-totp"
       params:
         icon: github
-    - identifier: v1.7
-      name: v1.7 (latest)
-      url: https://docs.zero-totp.com/v1.7/
+    - identifier: v1.8
+      name: v1.8(latest)
+      url: https://docs.zero-totp.com/v1.8/
 markup:
   highlight:
     noClasses: false
