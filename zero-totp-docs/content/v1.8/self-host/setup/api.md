@@ -10,7 +10,7 @@ cascade:
 
 
 
-Zero-TOTP is configured via a yaml config file that must be mounted in the container. You can follow the volume mounting of the installation or use your own. In anyway, the config file should be located and named : `/app/config.yml` in the API container.
+Zero-TOTP is configured via a yaml config file that must be mounted in the container. You can follow the volume mounting of the installation or use your own. In anyway, the config file should be located and named : `/api/config/config.yml` in the API container.
 
 
 You can download the default config file :

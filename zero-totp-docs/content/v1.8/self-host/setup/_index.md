@@ -12,9 +12,9 @@ Before starting using your Zero-TOTP instance, you need to set it up. This guide
 
 
 {{< cards >}}
-  {{< card link="/self-host/setup/reverse-proxy" title="1 - Reverse proxy setup" icon="server" tag="Mandatory"  >}}
-  {{< card link="/self-host/setup/api" title="2 - API setup" icon="chip" tag="Mandatory"  >}}
-  {{< card link="/self-host/setup/database" title="3 - Database setup" icon="database" tag="Mandatory"  >}}
+  {{< card link="./reverse-proxy" title="1 - Reverse proxy setup" icon="server" tag="Mandatory"  >}}
+  {{< card link="./api" title="2 - API setup" icon="chip" tag="Mandatory"  >}}
+  {{< card link="./database" title="3 - Database setup" icon="database" tag="Mandatory"  >}}
   {{< card link="/self-host/customization" title="4 - Customization" icon="adjustments" tag="Recommended"  >}}
 
 {{< /cards >}}

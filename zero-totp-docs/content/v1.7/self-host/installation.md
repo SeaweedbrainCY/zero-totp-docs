@@ -22,7 +22,7 @@ Create the following `docker-compose.yml` :
 services:
   frontend:
     container_name: frontend
-    image: ghcr.io/seaweedbraincy/zero-totp-frontend:1.6.3
+    image: ghcr.io/seaweedbraincy/zero-totp-frontend:1.7
     user: "101:101"
     ports:
       - 4200:80
@@ -32,7 +32,7 @@ services:
 
   api:
     container_name: api
-    image: ghcr.io/seaweedbraincy/zero-totp-api:1.6.3
+    image: ghcr.io/seaweedbraincy/zero-totp-api:1.7
     environment:
       USER_UID: 1001
       USER_GID: 1001
