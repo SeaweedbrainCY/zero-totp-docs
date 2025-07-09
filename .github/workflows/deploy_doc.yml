@@ -14,8 +14,6 @@ jobs:
         steps:
         - name: Checkout code
           uses: actions/checkout@v2
-        
-        - name: 
 
         - name: Generate latest version doc
           working-directory: ./zero-totp-docs/content
