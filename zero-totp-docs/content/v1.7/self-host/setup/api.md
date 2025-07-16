@@ -1,5 +1,5 @@
 ---
-date: 2025-07-09T21:22:19+00:00
+date: 2025-07-16T14:32:44Z
 
 title: 'Setup the Zero-TOTP API'
 linkTitle: 2 - API Setup 

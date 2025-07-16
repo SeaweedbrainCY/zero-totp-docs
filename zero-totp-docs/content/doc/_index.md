@@ -1,5 +1,5 @@
 ---
-date: 2025-07-16T14:29:30+00:00
+date: 2025-07-16T14:32:44Z
 title: 'Zero-TOTP Code Documentation'
 description: 'Documentation for Zero-TOTP Code'
 draft: false
