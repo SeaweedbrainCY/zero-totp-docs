@@ -11,17 +11,18 @@ cascade:
 
 A reverse proxy is mandatory to serve Zero-TOTP. **The API is not designed to be served directly over the internet.** You can use any reverse proxy you want, the following examples uses Nginx and Caddy, but any reverse proxy will work as long as it can serve the frontend and API over HTTPS and handle `X-Forwarded-*` headers (see below).
 
-### General considerations
+### Revproxy requirements
 
-No matter which reverse proxy you choose, the following considerations must be taken into account:
+No matter which reverse proxy you choose, the following considerations **must be taken into account**:
 
 **Routing and domain considerations :**
-- The frontend and the API must be served on the same domain.
-- Routes must be configured to serve the frontend at `/` and the API at `/api/`. 
+- The frontend and the API must be served on the **same domain**.
+- Route `/` must serve the frontend.
+- Route `/api/` must serve the API. **The requests to the API must contain the `/api` prefix.**
 
 **Security considerations :**
-- The frontend and API over HTTPS. This is mandatory to enabled the security features of Zero-TOTP.
-- For security reasons the reverse proxy must overwrites the X-Forwarded-For header with the real remote ip. 
+- The frontend and API over **HTTPS**. This is mandatory to enable the security features of Zero-TOTP.
+- For security reasons the reverse proxy must **overwrite the X-Forwarded-For header with the real remote ip**. 
 
 > [!warning]
 > Be careful to X-Forwarded-For that can be spoofed and must not be trusted. Zero-TOTP API is not meant to deal with a list of forwarded IP. The reverse proxy must keep the right one. Please refer to the documentation of your reverse proxy to see how to configure it properly.
@@ -40,7 +41,7 @@ Here is an example of a caddyfile that can be used to serve Zero-TOTP :
 ```caddyfile {filename="Caddyfile"}
 https://zero-totp.example.com {
 
-    // Serve the API
+    # Serve the API
     reverse_proxy /api/* 127.0.0.1:8080 {
       header_up X-Forwarded-For {client_ip}
     }
@@ -72,7 +73,7 @@ server {
 
     # Serve the API
     location /api/ {
-        proxy_pass http://127.0.1:8080;
+        proxy_pass http://127.0.1:8080/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr;

@@ -23,7 +23,9 @@ services:
   frontend:
     container_name: frontend
     image: ghcr.io/seaweedbraincy/zero-totp-frontend:1.8
-    user: "101:101"
+    environment:
+      USER_UID: 101
+      USER_GID: 101
     ports:
       - 4200:80
     volumes:
@@ -54,7 +56,7 @@ services:
     image:  mariadb:11
     container_name: database
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - ./database/data:/var/lib/mysql
       - ./database/config:/etc/mysql

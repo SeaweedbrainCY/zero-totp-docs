@@ -15,9 +15,9 @@ Zero-TOTP is configured via a yaml config file that must be mounted in the conta
 
 You can download the default config file :
 ```Bash
-curl -o config.yml https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml
+curl https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml  --create-dirs  -o ./api/config/config.yml 
 ```
-or copy the content of the [default config file](https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml) and paste it in a file named `config.yml`.
+or copy the content of the [default config file](https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml) and paste it in a file named `./api/config/config.yml`.
 
 > [!note]
 >  Several fields are mandatory in the config file. You must fill them to make Zero-TOTP work. If fields are missing, the API will fail to start.
@@ -30,7 +30,7 @@ Here are the list of mandatory fields you need to fill in the config file.  :
 > Only mandatory fields are listed here. For customization and understand other settings, see the [customization page](customization.md).
 
 > [!important]
-> This page help you to configure your `config.yml` file. The ease the notation, the fields are written as 1 line. But, it is only to describe the yaml file.
+> This page help you to configure your `config.yml` file. To ease the notation, the fields are written as 1 line. But, it is only to describe the yaml file.
 >
 > For example, `api.port: 8080` means that you have to write the following in your `config.yml` file:
 > ```yaml
@@ -38,11 +38,7 @@ Here are the list of mandatory fields you need to fill in the config file.  :
 >   port: 8080
 > ```
 
-- Field : `api.jwt_secret`
-    - Type: `string`
-    - Default: ` ` (empty)
-    - Description: A random 128 alphanumeric char string used to sign JWT tokens. [Safe generation tool](https://tools.stchepinsky.net/token-generator?length=128)
---- 
+
 - Field : `api.private_key_path`
     - Type: `string`
     - Default: `".secret/private.pem"`

@@ -26,15 +26,29 @@ You will be able to manage crucial database operations from the API. To set up y
 
 `docker compose up -d database`
 
+### Make sure the database is running and ready
+
+`docker compose logs database -f --tail 100`
+
 ###  Start your API 
 `docker compose up -d api`
 
 ###  Make sure the API is asking for a migration
 `docker compose logs api -f --tail 100`
 
-The API is going to run but be unhealthy. This is expected, as the database is not yet initialized. 
+You should see the following message 
 
-However, the API should not be crashing or throwing errors. If it does, please check the logs for any issues, it may be related to your configuration file or the database connection.
+```
+api  | ERROR [alembic.util.messaging] Target database is not up to date.
+api  | FAILED: Target database is not up to date.
+api  | ❌  Your database is not up to date. Follow Zero-TOTP's documentation to update it.
+api  | 📚 https://docs.zero-totp.com/latest/self-host/admin/database-migration/
+api  | 🕛 Docker will wait for your action to continue
+```
+
+This is expected, as the database is not yet initialized. 
+
+However, the API should not be crashing or throwing errors not related to database migration. If it does, please check the logs for any issues, it may be related to your configuration file or the database connection.
 
 ###  Run the initial database migration
 
