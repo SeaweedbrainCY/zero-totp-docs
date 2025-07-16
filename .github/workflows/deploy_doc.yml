@@ -15,6 +15,10 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
+        - name: Update modified fileds with their last modified date 
+          run: ./update_last_modified_date.sh
+
+
         - name: Generate latest version doc
           working-directory: ./zero-totp-docs/content
           run: |

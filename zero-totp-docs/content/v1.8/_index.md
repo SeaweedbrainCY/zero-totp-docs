@@ -1,5 +1,5 @@
 ---
-date: '2025-06-30T00:42:57Z'
+date: 2025-07-09T21:22:19+00:00
 
 title: 'Zero-TOTP Documentation'
 layout: hextra-home

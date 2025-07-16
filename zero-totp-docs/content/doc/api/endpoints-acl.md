@@ -1,5 +1,5 @@
 ---
-date: '2025-07-14T20:16:59Z'
+date: 2025-07-16T14:29:30+00:00
 title: 'Endpoints Access Control'
 linkTitle: "Endpoints ACL"
 description: 'Documentation for Zero-TOTP Endpoints Access Control'

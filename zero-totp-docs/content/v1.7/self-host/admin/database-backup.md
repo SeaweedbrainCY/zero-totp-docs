@@ -1,5 +1,5 @@
 ---
-date: '2025-06-30T00:56:13Z'
+date: 2025-07-02T18:09:59-04:00
 
 title: Backup and restore the Zero-TOTP database
 linkTitle : 'Database Backup'

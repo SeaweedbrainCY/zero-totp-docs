@@ -1,5 +1,5 @@
 ---
-date: '2025-06-30T00:55:15Z'
+date: 2025-07-09T21:22:19+00:00
 
 title: 'Customization of your Zero-TOTP instance'
 linkTitle: Customization

@@ -1,5 +1,5 @@
 ---
-date: '2025-06-30T00:54:51Z'
+date: 2025-07-02T18:09:59-04:00
 
 title: 'Setup your Zero-TOTP instance'
 linkTitle: Setup
