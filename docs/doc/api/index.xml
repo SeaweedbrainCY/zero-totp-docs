@@ -1,0 +1,178 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zero TOTP Docs – Zero-TOTP API Documentation</title><link>https://docs.zero-totp.com/doc/api/</link><description>Recent content in Zero-TOTP API Documentation on Zero TOTP Docs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 20 Jul 2025 14:38:28 +0000</lastBuildDate><atom:link href="https://docs.zero-totp.com/doc/api/index.xml" rel="self" type="application/rss+xml"/><item><title>Endpoints Access Control</title><link>https://docs.zero-totp.com/doc/api/endpoints-acl/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/doc/api/endpoints-acl/</guid><description>
+&lt;h2>Authentication&lt;span class="hx-absolute -hx-mt-20" id="authentication">&lt;/span>
+&lt;a href="#authentication" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Zero-TOTP ACLs are designed to control access to various API endpoints. The API uses a token-based authentication system. This token is named &lt;code>access_token&lt;/code> and is provided through cookies after a successful login.&lt;/p>
+&lt;h3>Access token&lt;span class="hx-absolute -hx-mt-20" id="access-token">&lt;/span>
+&lt;a href="#access-token" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The &lt;code>access_token&lt;/code> is an uuid, stored server-side in the database, associated with a unique user account and generally valid for few minutes only. This token is used to authenticate requests to the API.&lt;/p>
+&lt;h3>Refresh token&lt;span class="hx-absolute -hx-mt-20" id="refresh-token">&lt;/span>
+&lt;a href="#refresh-token" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Alongside the &lt;code>access_token&lt;/code>, the API also uses a &lt;code>refresh_token&lt;/code>. The &lt;code>refresh_token&lt;/code> is also an uuid, stored server-side in the database, associated with a unique user account and generally valid for a longer period (e.g., 24 hours). This token is associated to a unique &lt;code>access_token&lt;/code>.&lt;/p>
+&lt;p>The &lt;code>refresh_token&lt;/code> should never be used in general requests to the API, but only to call the refresh endpoint.&lt;/p>
+&lt;p>The &lt;code>refresh_token&lt;/code> is sent to the user through cookies after a successful login.&lt;/p>
+&lt;h3>Refresh token flow&lt;span class="hx-absolute -hx-mt-20" id="refresh-token-flow">&lt;/span>
+&lt;a href="#refresh-token-flow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The refresh token flow allows users to obtain a new access token without needing to re-authenticate. This is particularly useful for maintaining user sessions without requiring frequent logins and to keep the &lt;code>access_token&lt;/code> validity as short as possible for security reasons.&lt;/p>
+&lt;p>When the user&amp;rsquo;s &lt;code>access_token&lt;/code> expires, the client must follow the following flow :&lt;/p>
+&lt;ol>
+&lt;li>PUT &lt;code>/api/v1/auth/refresh&lt;/code> with the expired &lt;code>access_token&lt;/code> and &lt;code>refresh_token&lt;/code> in the request cookies.&lt;/li>
+&lt;li>The API verifies
+&lt;ul>
+&lt;li>The &lt;code>refresh_token&lt;/code> is not expired.&lt;/li>
+&lt;li>The &lt;code>refresh_token&lt;/code> is not revoked.&lt;/li>
+&lt;li>The &lt;code>refresh_token&lt;/code> and &lt;code>access_token&lt;/code> are associated with the same user account.&lt;/li>
+&lt;li>The &lt;code>refresh_token&lt;/code> is associated with the given &lt;code>access_token&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>If all checks pass the API:
+&lt;ol>
+&lt;li>Generates a new &lt;code>access_token&lt;/code> and &lt;code>refresh_token&lt;/code>.&lt;/li>
+&lt;li>Revokes the old &lt;code>access_token&lt;/code> and &lt;code>refresh_token&lt;/code> to prevent reuse.&lt;/li>
+&lt;li>Returns the new &lt;code>access_token&lt;/code> and &lt;code>refresh_token&lt;/code> in the response cookies. &lt;strong>The new refresh token will have the SAME expiry as the previous one.&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;p>The authentication process involves the following steps:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>User Login&lt;/strong>: The user sends a login request with their credentials (username and hashed password).&lt;/li>
+&lt;li>&lt;strong>Token Generation&lt;/strong>: Upon successful authentication, the server generates a unique token (UUID) and returns it to the user&lt;/li>
+&lt;/ol>
+&lt;h2>Authorization&lt;span class="hx-absolute -hx-mt-20" id="authorization">&lt;/span>
+&lt;a href="#authorization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Authorization handlers&lt;span class="hx-absolute -hx-mt-20" id="authorization-handlers">&lt;/span>
+&lt;a href="#authorization-handlers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The authorization is performed at 2 levels:&lt;/p>
+&lt;ul>
+&lt;li>On the request arrival following the defined OpenAPI specs using the session checker defined in the &lt;a href="https://github.com/SeaweedbrainCY/zero-totp/blob/main/api/CryptoClasses/session_verification.py" target="_blank" rel="noopener">&lt;code>api/CryptoClasses/session_verification.py:verify_session&lt;/code>&lt;/a> function.&lt;/li>
+&lt;li>On the request processing through the wrappers defined in &lt;a href="https://github.com/SeaweedbrainCY/zero-totp/blob/main/api/Utils/security_wrapper.py" target="_blank" rel="noopener">&lt;code>api/Utils/security_wrapper.py&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3>ACLs per endpoint&lt;span class="hx-absolute -hx-mt-20" id="acls-per-endpoint">&lt;/span>
+&lt;a href="#acls-per-endpoint" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Zero-TOTP API defines 3 levels of authorization:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Anyone&lt;/code> : Anyone, everyone, even without any cookie.&lt;/li>
+&lt;li>&lt;code>Unverified user&lt;/code>: A user successfully authenticated with an &lt;strong>user token&lt;/strong> but with an email not verified&lt;/li>
+&lt;li>&lt;code>Valid user&lt;/code>: A user successfully authenticated with a verified email.&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Endpoint&lt;/th>
+&lt;th>&lt;code>Anyone&lt;/code>&lt;/th>
+&lt;th>&lt;code>Unverified user&lt;/code>&lt;/th>
+&lt;th>&lt;code>Valid user&lt;/code>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>/signup&lt;/code>&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/login &lt;/code>&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/login/specs&lt;/code>&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/role&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/update/email&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/email/verify&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/email/send_verification&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/zke_encrypted_key&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/encrypted_secret/{uuid}&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/all_secrets&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/update/vault&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/vault/export&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/google-drive/oauth/authorization-flow&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/google-drive/oauth/callback&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/google-drive/option&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/google-drive/backup&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/google-drive/last-backup/verify&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/account&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/preferences&lt;/code>&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>❌&lt;/td>
+&lt;td>✅&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>API Swagger</title><link>https://docs.zero-totp.com/doc/api/swagger/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/doc/api/swagger/</guid><description>
+&lt;p>&lt;em>If this page doesn&amp;rsquo;t work, you can consult the API swagger directly on &lt;a href="https://github.com/SeaweedbrainCY/zero-totp/blob/main/api/openAPI/swagger.yml" target="_blank" rel="noopener">GitHub&lt;/a>&lt;/em>&lt;/p>
+&lt;p>This page is an iframe of &lt;a href="https://zero-totp.com/api/v1/ui" target="_blank" rel="noopener">https://zero-totp.com/api/v1/ui&lt;/a>.&lt;/p>
+&lt;iframe src="https://zero-totp.com/api/v1/ui" width="100%" height="800px" ></description></item></channel></rss>

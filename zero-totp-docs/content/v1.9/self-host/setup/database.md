@@ -1,6 +1,6 @@
 
 ---
-date: 2025-07-16T14:29:30+00:00
+date: 2025-07-20T14:38:28Z
 
 title: 'Setup the Zero-TOTP database'
 linkTitle: 3 - Database Setup

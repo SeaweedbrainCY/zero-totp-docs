@@ -1,0 +1,294 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zero TOTP Docs – Self-hosting Zero-TOTP</title><link>https://docs.zero-totp.com/v1.9/self-host/</link><description>Recent content in Self-hosting Zero-TOTP on Zero TOTP Docs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 20 Jul 2025 14:38:28 +0000</lastBuildDate><atom:link href="https://docs.zero-totp.com/v1.9/self-host/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Zero-TOTP</title><link>https://docs.zero-totp.com/v1.9/self-host/installation/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/installation/</guid><description>
+&lt;p>Zero-TOTP supports installation via Docker. This guide will help you to set up Zero-TOTP on your server.&lt;/p>
+&lt;h2>Requirements&lt;span class="hx-absolute -hx-mt-20" id="requirements">&lt;/span>
+&lt;a href="#requirements" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>To self-host Zero-TOTP, you need the following components:&lt;/p>
+&lt;ul>
+&lt;li>Docker (and docker compose for easier management)&lt;/li>
+&lt;/ul>
+&lt;h2>Installation via docker-compose&lt;span class="hx-absolute -hx-mt-20" id="installation-via-docker-compose">&lt;/span>
+&lt;a href="#installation-via-docker-compose" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Create the following &lt;code>docker-compose.yml&lt;/code> :&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">docker-compose.yml&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">frontend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">frontend&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ghcr.io/seaweedbraincy/zero-totp-frontend:1.9&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">USER_UID&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">101&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">USER_GID&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">101&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="m">4200&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./frontend/log:/var/log/nginx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">api&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">api&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ghcr.io/seaweedbraincy/zero-totp-api:1.9&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">USER_UID&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">1001&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">USER_GID&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">1001&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="m">8080&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="m">8080&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./api/secret:/api/secret&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./api/logs:/api/logs&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./api/config:/api/config&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">database&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MYSQL_ROOT_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">weak_password&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c">## CHANGE_ME&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MYSQL_DATABASE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">zero_totp&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MYSQL_USER&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">api&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MYSQL_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">weak_password&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c">## CHANGE_ME&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mariadb:11&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">database&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;127.0.0.1:3306:3306&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./database/data:/var/lib/mysql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./database/config:/etc/mysql&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Make sure to change the &lt;code>MYSQL_ROOT_PASSWORD&lt;/code> and &lt;code>MYSQL_PASSWORD&lt;/code> to a strong password.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>How images tags work&lt;span class="hx-absolute -hx-mt-20" id="how-images-tags-work">&lt;/span>
+&lt;a href="#how-images-tags-work" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Official and stable releases of Zero-TOTP are disclosed in &lt;a href="https://github.com/SeaweedbrainCY/zero-totp/releases" target="_blank" rel="noopener">Github releases page&lt;/a>.&lt;/p>
+&lt;p>They always work with the same version of the API and the frontend. Version tag format is &lt;code>vX.Y.Z&lt;/code> where &lt;code>X&lt;/code> is the major version, &lt;code>Y&lt;/code> is the minor version and &lt;code>Z&lt;/code> is the patch version.&lt;/p>
+&lt;p>Each new release is always associated with 3 tags:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>X.Y.Z&lt;/code>, the last exact stable version of Zero-TOTP.&lt;/li>
+&lt;li>&lt;code>X.Y&lt;/code>, the last stable version of Zero-TOTP. You can safely use this and regularly upgrade to get the last patches, without worrying about breaking changes.&lt;/li>
+&lt;li>&lt;code>latest&lt;/code>, the last stable version of Zero-TOTP.&lt;/li>
+&lt;/ul>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>It is highly recommended to use the &lt;code>X.Y&lt;/code> tag to ensure you are always using the latest stable version of Zero-TOTP without worrying about breaking changes.&lt;/p>
+&lt;p>Using &lt;code>latest&lt;/code> tag is not recommended as it may lead to unexpected breaking changes if a new major version is released.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Setup your Zero-TOTP instance</title><link>https://docs.zero-totp.com/v1.9/self-host/setup/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/setup/</guid><description>
+&lt;p>Before starting using your Zero-TOTP instance, you need to set it up. This guide will help you to set up Zero-TOTP on your server. This setup is mandatory. To further customize your instance, please refer to the &lt;a href="customization.md" >customization page&lt;/a>.&lt;/p>
+&lt;div class="hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose" style="--hextra-cards-grid-cols: 3;">
+&lt;a
+class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="./reverse-proxy"
+>&lt;span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>&lt;/svg>1 - Reverse proxy setup&lt;/span>&lt;div class="hextra-badge hextra-card-tag">
+&lt;div class="hx-inline-flex hx-gap-1 hx-items-center hx-rounded-full hx-px-2.5 hx-leading-6 hx-text-[.65rem] hx-border hx-text-gray-600 hx-bg-gray-100 dark:hx-bg-neutral-800 dark:hx-text-neutral-200 hx-border-gray-200 dark:hx-border-neutral-700">Mandatory&lt;/div>
+&lt;/div>&lt;/a>
+&lt;a
+class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="./api"
+>&lt;span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>&lt;/svg>2 - API setup&lt;/span>&lt;div class="hextra-badge hextra-card-tag">
+&lt;div class="hx-inline-flex hx-gap-1 hx-items-center hx-rounded-full hx-px-2.5 hx-leading-6 hx-text-[.65rem] hx-border hx-text-gray-600 hx-bg-gray-100 dark:hx-bg-neutral-800 dark:hx-text-neutral-200 hx-border-gray-200 dark:hx-border-neutral-700">Mandatory&lt;/div>
+&lt;/div>&lt;/a>
+&lt;a
+class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="./database"
+>&lt;span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>&lt;/svg>3 - Database setup&lt;/span>&lt;div class="hextra-badge hextra-card-tag">
+&lt;div class="hx-inline-flex hx-gap-1 hx-items-center hx-rounded-full hx-px-2.5 hx-leading-6 hx-text-[.65rem] hx-border hx-text-gray-600 hx-bg-gray-100 dark:hx-bg-neutral-800 dark:hx-text-neutral-200 hx-border-gray-200 dark:hx-border-neutral-700">Mandatory&lt;/div>
+&lt;/div>&lt;/a>
+&lt;a
+class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="https://docs.zero-totp.com/self-host/customization"
+>&lt;span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>&lt;/svg>4 - Customization&lt;/span>&lt;div class="hextra-badge hextra-card-tag">
+&lt;div class="hx-inline-flex hx-gap-1 hx-items-center hx-rounded-full hx-px-2.5 hx-leading-6 hx-text-[.65rem] hx-border hx-text-gray-600 hx-bg-gray-100 dark:hx-bg-neutral-800 dark:hx-text-neutral-200 hx-border-gray-200 dark:hx-border-neutral-700">Recommended&lt;/div>
+&lt;/div>&lt;/a>
+&lt;/div></description></item><item><title>Customization of your Zero-TOTP instance</title><link>https://docs.zero-totp.com/v1.9/self-host/customization/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/customization/</guid><description>
+&lt;p>Beside mandatory fields, it is highly recommended customizing your Zero-TOTP instance to fit your needs and network architecture.&lt;/p>
+&lt;p>This page will guide you through the customization process and explain how to properly configure Zero-TOTP.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>This page help you to configure your &lt;code>config.yml&lt;/code> file. The ease the notation, the fields are written as 1 line. But, it is only to describe the yaml file.&lt;/p>
+&lt;p>For example, &lt;code>api.port: 8080&lt;/code> means that you have to write the following in your &lt;code>config.yml&lt;/code> file:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">api&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">8080&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>Features customization (recommended)&lt;span class="hx-absolute -hx-mt-20" id="features-customization-recommended">&lt;/span>
+&lt;a href="#features-customization-recommended" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>This parts helps you customize the enabled features of Zero-TOTP. Unlike the API customization, keeping the default configuration will not impact the API behavior or its security, but will disable some features.&lt;/p>
+&lt;p>Default values are provided to keeo Zero-TOTP as plug and play as possible. But it is recommended to adapt those values to fit your needs.&lt;/p>
+&lt;h3>Google Drive automatic backup&lt;span class="hx-absolute -hx-mt-20" id="google-drive-automatic-backup">&lt;/span>
+&lt;a href="#google-drive-automatic-backup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Before being able to configure Google Drive automatic backup, you must first register your application as a Google Oauth client. See the &lt;a href="../admin/google_drive_backup/" >How to configure Google Drive automatic backup&lt;/a> for more information.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>One key feature of Zero-TOTP is the possibility for users to automatically backup their vaults to Google Drive. To enable this feature, you must register you application as a Google Oauth client and give the following information :&lt;/p>
+&lt;ul>
+&lt;li>Field: &lt;code>features.google_drive_backup.enabled&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>bool&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>false&lt;/code>&lt;/li>
+&lt;li>Description: Enable Google Drive automatic backup feature. If set to true, below setting will have to be filled.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field: &lt;code>features.google_drive_backup.client_secret_file_path&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: The path to the client secret file used to authenticate with Google Drive. This file must be in JSON format and contain the OAuth credentials. See the &lt;a href="../admin/google_drive_backup/" >How to configure Google Drive automatic backup&lt;/a> for more information.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>Automatic backup configuration&lt;span class="hx-absolute -hx-mt-20" id="automatic-backup-configuration">&lt;/span>
+&lt;a href="#automatic-backup-configuration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>For now, only Google Drive automatic backup is supported. But the below configuration is used for every backup provider. The main goal is to define the &lt;strong>default&lt;/strong> backup frequency and the minimum number of backups to keep. Users will be able to override those settings in their profile.&lt;/p>
+&lt;ul>
+&lt;li>Field: &lt;code>features.default_backup_configuration.backup_minimum_count&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>20&lt;/code>&lt;/li>
+&lt;li>Description: Minimum number of backups Zero-TOTP will ever keep in user&amp;rsquo;s Google Drive. &lt;em>Default : no matter what, Zero-TOTP will always keep at least the 20 last backups in user&amp;rsquo;s Google Drive.&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field: &lt;code>features.default_backup_configuration.max_age_in_days&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>30&lt;/code>&lt;/li>
+&lt;li>Description: Backups minimum age. If backups are older than this parameter, in days, and if the above parameter is also matched, backups will be deleted. &lt;em>Default : 30 days&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>Emails&lt;span class="hx-absolute -hx-mt-20" id="emails">&lt;/span>
+&lt;a href="#emails" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The email feature is used to send emails to users. The main purpose is to send verification emails to your users when signing up, but also for password reset. &lt;strong>STARTTLS is required.&lt;/strong>&lt;/p>
+&lt;p>If you disable emails, users will not be prompted to validate their email.&lt;/p>
+&lt;ul>
+&lt;li>Field : &lt;code>features.emails.require_email_validation&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>bool&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>false&lt;/code>&lt;/li>
+&lt;li>Description: Require email validation for new users. If set to true, below settings will have to be filled.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>features.emails.email_sender_address&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Sender email address. Can be &lt;code>example@domain.com&lt;/code> or &lt;code>Example &amp;lt;example@domain.com&amp;gt;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>features.emails.email_smtp_port&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: SMTP port to use. STARTTLS will be used.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>features.emails.email_smtp_username&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Username used to authenticate to SMTP server. STARTTLS will be used.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>features.emails.email_smtp_password&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Password used to authenticate to SMTP server. STARTTLS will be used.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>Rate limiting&lt;span class="hx-absolute -hx-mt-20" id="rate-limiting">&lt;/span>
+&lt;a href="#rate-limiting" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Zero-TOTP has a built-in rate limiting feature to prevent abuse of the API and more specifically protect the login endpoint and email verification endpoint. This feature is enabled by default.&lt;/p>
+&lt;ul>
+&lt;li>Field: &lt;code>features.rate_limiting.login_attempts_limit_per_ip&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>10&lt;/code>&lt;/li>
+&lt;li>Description: Max consecutive failed login per IP within &lt;strong>1h&lt;/strong>. &lt;em>Default : max 10 failed login per 1h per IP&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field: &lt;code>features.rate_limiting.login_ban_time&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>15&lt;/code>&lt;/li>
+&lt;li>Description: If the previous condition is matched, this value defines to ban time, per IP, in minutes, from login. &lt;em>Default: 15min&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field: &lt;code>features.rate_limiting.send_email_attempts_limit_per_user&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>5&lt;/code>&lt;/li>
+&lt;li>Description: Max consecutive verification email sent to a user within 1 hour. &lt;em>Default : max 5 consecutive verification email sent per hour per user.&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field: &lt;code>features.rate_limiting.send_email_ban_time&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>int&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>60&lt;/code>&lt;/li>
+&lt;li>Description: If the previous condition is matched, this value defines to ban time, per user, in minutes, from requesting a new verification email. &lt;em>Default: 60min&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>Sentry&lt;span class="hx-absolute -hx-mt-20" id="sentry">&lt;/span>
+&lt;a href="#sentry" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Zero-TOTP has a built-in Sentry integration to report errors and exceptions. This feature is disabled by default.&lt;/p>
+&lt;ul>
+&lt;li>Field : &lt;code>features.sentry.dsn&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Sentry DSN URL. For more information, see the &lt;a href="https://docs.sentry.io/platforms/python/flask/" target="_blank" rel="noopener">Sentry documentation&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Admin</title><link>https://docs.zero-totp.com/v1.9/self-host/admin/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/admin/</guid><description>
+&lt;p>During the whole life of your Zero-TOTP instance, you will need to perform some administrative tasks. This page will help you to perform these tasks.&lt;/p>
+&lt;p>Among the task you might need to perform, you will find:&lt;/p>
+&lt;ul>
+&lt;li>Database backup and restore (&lt;strong>database backup is more than heavily recommended !&lt;/strong>)&lt;/li>
+&lt;li>Database migration (when upgrading Zero-TOTP version)&lt;/li>
+&lt;/ul>
+&lt;div class="hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose" style="--hextra-cards-grid-cols: 3;">
+&lt;a
+class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="./database-backup"
+>&lt;span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>&lt;/svg>Database backup&lt;/span>&lt;/a>
+&lt;/div></description></item></channel></rss>

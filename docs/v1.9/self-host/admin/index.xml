@@ -1,0 +1,204 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zero TOTP Docs – Admin</title><link>https://docs.zero-totp.com/v1.9/self-host/admin/</link><description>Recent content in Admin on Zero TOTP Docs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 20 Jul 2025 14:38:28 +0000</lastBuildDate><atom:link href="https://docs.zero-totp.com/v1.9/self-host/admin/index.xml" rel="self" type="application/rss+xml"/><item><title>Backup and restore the Zero-TOTP database</title><link>https://docs.zero-totp.com/v1.9/self-host/admin/database-backup/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/admin/database-backup/</guid><description>
+&lt;p>Backing up your database is important to prevent data loss. You can use the &lt;code>mariadb-dump&lt;/code> utility to backup your database.&lt;/p>
+&lt;h2>Backup your database&lt;span class="hx-absolute -hx-mt-20" id="backup-your-database">&lt;/span>
+&lt;a href="#backup-your-database" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>If you are not using environment variables in docker, make sure to update &lt;code>&amp;quot;$MYSQL_DATABASE&amp;quot;&lt;/code> and &lt;code>&amp;quot;$MYSQL_ROOT_PASSWORD&amp;quot;&lt;/code>.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>To backup your database, you can use the following commands on your host :&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Database backup command&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose &lt;span class="nb">exec&lt;/span> database /bin/bash -c &lt;span class="s1">&amp;#39;mariadb-dump --databases $MYSQL_DATABASE --user=root --password=$MYSQL_ROOT_PASSWORD &amp;gt; /var/lib/mysql/db_backup_$(date +%Y%m%d_%H%M%S).sql&amp;#39;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>Backup location :&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>The backup file will be named db_backup_*.log&lt;/li>
+&lt;li>The backup file will be saved in the &lt;code>/var/lib/mysql&lt;/code> directory of the database container which is a mounted volume in your host. Check the mount point in your &lt;code>docker-compose.yml&lt;/code> file to find the backup file.&lt;/li>
+&lt;/ul>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>It is highly recommended to copy the backups files into an external filesystem and verify they are not empty !&lt;/strong>&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>Restore a database backup&lt;span class="hx-absolute -hx-mt-20" id="restore-a-database-backup">&lt;/span>
+&lt;a href="#restore-a-database-backup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Make sure to mount the backup file into the database container before running the restore command. You can use the &lt;code>/var/lib/mysql&lt;/code> mounted volume to copy the backup file into the container. The default path for the mounted volume is &lt;code>$pwd/database/config/&lt;/code>.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>If you are not using environment variables in docker, make sure to update &lt;code>&amp;quot;$MYSQL_DATABASE&amp;quot;&lt;/code> and &lt;code>&amp;quot;$MYSQL_ROOT_PASSWORD&amp;quot;&lt;/code>.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Restore backup&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose &lt;span class="nb">exec&lt;/span> database /bin/sh -c &lt;span class="s1">&amp;#39;mariadb --user=root --password=$MYSQL_ROOT_PASSWORD &amp;lt; $PATH_TO_SQL_FILE_IN_DOCKER_CONTAINER.sql&amp;#39;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item><item><title>Migrate your database</title><link>https://docs.zero-totp.com/v1.9/self-host/admin/database-migration/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/admin/database-migration/</guid><description>
+&lt;p>When you are upgrading Zero-TOTP, you may need to migrate your database to the new version. If this is the case, it will be mentioned in the release notes and the API will refuse to start.&lt;/p>
+&lt;p>To avoid any data loss, you will have to perform the migration yourself &lt;strong>after having made a backup of your database&lt;/strong>.&lt;/p>
+&lt;h2>How to migrate your database&lt;span class="hx-absolute -hx-mt-20" id="how-to-migrate-your-database">&lt;/span>
+&lt;a href="#how-to-migrate-your-database" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>1 - Backup your database&lt;span class="hx-absolute -hx-mt-20" id="1---backup-your-database">&lt;/span>
+&lt;a href="#1---backup-your-database" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Before performing any migration, it is highly recommended to backup your database. You can follow the &lt;a href="../database-backup" >Backup and restore documentation&lt;/a> to backup your database.&lt;/p>
+&lt;h3>2 - Run the migration script&lt;span class="hx-absolute -hx-mt-20" id="2---run-the-migration-script">&lt;/span>
+&lt;a href="#2---run-the-migration-script" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Zero-TOTP provides a built-in migration script, directly in the API docker container to help you migrate your database.&lt;/p>
+&lt;p>You can run the migration script using the following command:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Run migration script&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose &lt;span class="nb">exec&lt;/span> api /bin/sh -c &lt;span class="s2">&amp;#34;./admin-toolbox.sh db-migrate&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Follow the instructions to complete the migration.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The API will perform the migration on the database and will update the database schema to the latest version.
+Therefore, the database must be up and running !&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>3 - Restart the API&lt;span class="hx-absolute -hx-mt-20" id="3---restart-the-api">&lt;/span>
+&lt;a href="#3---restart-the-api" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>After the migration is complete, you will need to restart the API to apply the changes. You can do this by running:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Restart API&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose restart api&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item><item><title>Enable Google Drive automatic backups for users</title><link>https://docs.zero-totp.com/v1.9/self-host/admin/google_drive_backup/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.9/self-host/admin/google_drive_backup/</guid><description>
+&lt;p>Zero-TOTP offers a very important feature to ensure the availability of your users&amp;rsquo; data: &lt;strong>automatic backups to Google Drive&lt;/strong>. This feature allows users to automatically backup their data to their Google Drive account, ensuring that they can restore their data in case of loss, corruption or downtime.&lt;/p>
+&lt;p>By default, this feature is disabled since it requires this tenant of Zero-TOTP to be authorized by the user to access their Google Drive account (via OAuth2).&lt;/p>
+&lt;h2>How to enable Google Drive backups&lt;span class="hx-absolute -hx-mt-20" id="how-to-enable-google-drive-backups">&lt;/span>
+&lt;a href="#how-to-enable-google-drive-backups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>1 - Create an Oauth consent screen&lt;span class="hx-absolute -hx-mt-20" id="1---create-an-oauth-consent-screen">&lt;/span>
+&lt;a href="#1---create-an-oauth-consent-screen" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;strong>Recommended : &lt;a href="https://developers.google.com/identity/protocols/oauth2" target="_blank" rel="noopener">Google documentation&lt;/a> &lt;span class="hx-inline-block hx-align-text-bottom icon">&lt;svg height=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>&lt;/svg>&lt;/span>
+&lt;/strong>
+To enable Google Drive backups, you first need to create an OAuth consent screen. This screen is necessary for users to authorize your application to access their Google Drive account. Follow these steps:&lt;/p>
+&lt;ol>
+&lt;li>Go to the &lt;a href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console&lt;/a>.&lt;/li>
+&lt;li>Create a new project or select an existing one.&lt;/li>
+&lt;li>Navigate to the &lt;strong>APIs &amp;amp; Services&lt;/strong> section.&lt;/li>
+&lt;li>Click on &lt;strong>OAuth consent screen&lt;/strong> in the left sidebar.&lt;/li>
+&lt;li>Select the &lt;strong>External&lt;/strong> user type.&lt;/li>
+&lt;li>Fill in the required fields such as &lt;strong>App name&lt;/strong>, &lt;strong>User support email&lt;/strong>, and &lt;strong>Developer contact information&lt;/strong>.&lt;/li>
+&lt;/ol>
+&lt;h3>2 - Register your application on Google Cloud&lt;span class="hx-absolute -hx-mt-20" id="2---register-your-application-on-google-cloud">&lt;/span>
+&lt;a href="#2---register-your-application-on-google-cloud" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;strong>Recommended : &lt;a href="https://developers.google.com/identity/protocols/oauth2" target="_blank" rel="noopener">Google documentation&lt;/a> &lt;span class="hx-inline-block hx-align-text-bottom icon">&lt;svg height=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>&lt;/svg>&lt;/span>
+&lt;/strong>&lt;/p>
+&lt;p>To enable Google Drive backups, you need to register your application on Google Cloud and obtain the necessary credentials. Follow these steps:&lt;/p>
+&lt;ol>
+&lt;li>Go to the &lt;a href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console&lt;/a>.&lt;/li>
+&lt;li>Select the project you created in the previous step.&lt;/li>
+&lt;li>Navigate to the &lt;strong>APIs &amp;amp; Services&lt;/strong> section.&lt;/li>
+&lt;li>Click on &lt;strong>Credentials&lt;/strong> in the left sidebar.&lt;/li>
+&lt;li>Click on &lt;strong>Create credentials&lt;/strong> and select &lt;strong>OAuth client ID&lt;/strong>.&lt;/li>
+&lt;li>Configure the consent screen by providing the necessary information (application name, support email, etc.).&lt;/li>
+&lt;li>Select &lt;strong>Web application&lt;/strong> as the application type.&lt;/li>
+&lt;li>Add the following authorized Javascript origins:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>https://&amp;lt;your-domain&amp;gt;&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+Replace &lt;code>&amp;lt;your-domain&amp;gt;&lt;/code> with your actual domain name.&lt;/li>
+&lt;li>Add the following redirect URI:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>https://&amp;lt;your-domain&amp;gt;/api/v1/google-drive/oauth/callback&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+Replace &lt;code>&amp;lt;your-domain&amp;gt;&lt;/code> with your actual domain name.&lt;/li>
+&lt;li>Click on &lt;strong>Create&lt;/strong> to generate your OAuth client ID and secret.&lt;/li>
+&lt;li>Download the JSON file containing your credentials. This file will be used to configure Zero-TOTP.&lt;/li>
+&lt;/ol>
+&lt;h3>3 - Configure Google Drive access&lt;span class="hx-absolute -hx-mt-20" id="3---configure-google-drive-access">&lt;/span>
+&lt;a href="#3---configure-google-drive-access" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>Go to the &lt;a href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console&lt;/a>.&lt;/li>
+&lt;li>Select the project you created in the previous step.&lt;/li>
+&lt;li>Navigate to the &lt;strong>APIs &amp;amp; Services&lt;/strong> section.&lt;/li>
+&lt;li>Click on &lt;strong>Library&lt;/strong> in the left sidebar.&lt;/li>
+&lt;li>Search for &lt;strong>Google Drive API&lt;/strong> and click on it.&lt;/li>
+&lt;li>Click on the &lt;strong>Enable&lt;/strong> button to enable the Google Drive API for your project.&lt;/li>
+&lt;li>Go back to &lt;strong>APIs &amp;amp; Services&lt;/strong> and click on &lt;strong>Oauth Consent Screen&lt;/strong> in the left sidebar.&lt;/li>
+&lt;li>Click on &lt;strong>Data Access&lt;/strong> in the left sidebar.&lt;/li>
+&lt;li>Click on &lt;strong>Add or remove scopes&lt;/strong>.&lt;/li>
+&lt;li>Add the following scopes:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>.../auth/drive.appdata
+.../auth/drive.file&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;li>Click on &lt;strong>Update&lt;/strong> to save the changes.&lt;/li>
+&lt;li>Publish your OAuth consent screen by clicking on the &lt;strong>Publish App&lt;/strong> button. You will need to fill in some additional information such as the application homepage, privacy policy URL, and terms of service URL. Google will review your application before it can be published. This process may take some time, so be patient. In the meantime, you can test the Google Drive backups feature in development mode. In development mode, only whitelisted users can use the Oauth consent screen. You can add users to the whitelist by going to the &lt;strong>OAuth consent screen&lt;/strong> page in the Google Cloud Console and clicking on the &lt;strong>Test users&lt;/strong> tab. Add the email addresses of the users you want to whitelist.&lt;/li>
+&lt;/ol>
+&lt;h3>4 - Configure Zero-TOTP&lt;span class="hx-absolute -hx-mt-20" id="4---configure-zero-totp">&lt;/span>
+&lt;a href="#4---configure-zero-totp" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>Upload the JSON file containing your credentials to the Zero-TOTP server host.&lt;/li>
+&lt;li>Mount the file into the Zero-TOTP API container. You can choose the path you want. The most convenient way is to use the already mounted &lt;code>/api/config/&lt;/code> directory.&lt;/li>
+&lt;li>Edit the &lt;code>config.yml&lt;/code> file of your Zero-TOTP instance and configure the following fields :&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">config.yml (partial)&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># [...]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">features&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">google_drive_backup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">client_secret_file_path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;/api/config/your_client_secret_file.json&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Path to the JSON file containing your credentials&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># [...]&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

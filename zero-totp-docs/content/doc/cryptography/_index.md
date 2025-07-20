@@ -1,5 +1,5 @@
 ---
-date: 2025-07-16T14:29:30+00:00
+date: 2025-07-20T14:38:28Z
 title: "Zero-TOTP's Cryptography Documentation"
 linkTitle: "Cryptography"
 description: 'Documentation for Zero-TOTP Cryptography'

@@ -1,0 +1,266 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zero TOTP Docs – Setup your Zero-TOTP instance</title><link>https://docs.zero-totp.com/v1.8/self-host/setup/</link><description>Recent content in Setup your Zero-TOTP instance on Zero TOTP Docs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 20 Jul 2025 14:38:28 +0000</lastBuildDate><atom:link href="https://docs.zero-totp.com/v1.8/self-host/setup/index.xml" rel="self" type="application/rss+xml"/><item><title>Setup your reverse proxy</title><link>https://docs.zero-totp.com/v1.8/self-host/setup/reverse-proxy/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.8/self-host/setup/reverse-proxy/</guid><description>
+&lt;p>A reverse proxy is mandatory to serve Zero-TOTP. &lt;strong>The API is not designed to be served directly over the internet.&lt;/strong> You can use any reverse proxy you want, the following examples uses Nginx and Caddy, but any reverse proxy will work as long as it can serve the frontend and API over HTTPS and handle &lt;code>X-Forwarded-*&lt;/code> headers (see below).&lt;/p>
+&lt;h3>Revproxy requirements&lt;span class="hx-absolute -hx-mt-20" id="revproxy-requirements">&lt;/span>
+&lt;a href="#revproxy-requirements" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>No matter which reverse proxy you choose, the following considerations &lt;strong>must be taken into account&lt;/strong>:&lt;/p>
+&lt;p>&lt;strong>Routing and domain considerations :&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>The frontend and the API must be served on the &lt;strong>same domain&lt;/strong>.&lt;/li>
+&lt;li>Route &lt;code>/&lt;/code> must serve the frontend.&lt;/li>
+&lt;li>Route &lt;code>/api/&lt;/code> must serve the API. &lt;strong>The requests to the API must contain the &lt;code>/api&lt;/code> prefix.&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Security considerations :&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>The frontend and API over &lt;strong>HTTPS&lt;/strong>. This is mandatory to enable the security features of Zero-TOTP.&lt;/li>
+&lt;li>For security reasons the reverse proxy must &lt;strong>overwrite the X-Forwarded-For header with the real remote ip&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Be careful to X-Forwarded-For that can be spoofed and must not be trusted. Zero-TOTP API is not meant to deal with a list of forwarded IP. The reverse proxy must keep the right one. Please refer to the documentation of your reverse proxy to see how to configure it properly.&lt;/p>
+&lt;p>A special guide for revproxy behind Cloudflare is available below.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>A bad configuration of the reverse proxy can lead to serious security issues. If you are not sure how to configure your reverse proxy, please use the provided examples, refer to the documentation of your reverse proxy or ask for help in the &lt;a href="https://discord.gg/77JrdbxNZD" target="_blank" rel="noopener">Zero-TOTP Discord server&lt;/a>.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Caddy example&lt;span class="hx-absolute -hx-mt-20" id="caddy-example">&lt;/span>
+&lt;a href="#caddy-example" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>We are considering the API/frontend are running on the same server and the docker compose is configured to expose the API on port &lt;code>8080&lt;/code> and the frontend on port &lt;code>4200&lt;/code>. Adapt the IP and port to your setup.&lt;/p>
+&lt;p>Here is an example of a caddyfile that can be used to serve Zero-TOTP :&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Caddyfile&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-caddyfile" data-lang="caddyfile">&lt;span class="line">&lt;span class="cl">&lt;span class="gh">https://zero-totp.example.com&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # Serve the API
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">reverse_proxy&lt;/span> &lt;span class="nd">/api/*&lt;/span> &lt;span class="n">127.0.0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">8080&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">header_up&lt;/span> &lt;span class="s">X-Forwarded-For&lt;/span> &lt;span class="se">{client_ip}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">reverse_proxy&lt;/span> &lt;span class="n">127.0.0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">4200&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>This is a basic configuration, make sure to adapt it to your needs. You can find more information on the &lt;a href="https://caddyserver.com/docs/" target="_blank" rel="noopener">Caddy documentation&lt;/a>.&lt;/p>
+&lt;h3>Nginx example&lt;span class="hx-absolute -hx-mt-20" id="nginx-example">&lt;/span>
+&lt;a href="#nginx-example" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Here is an example of an Nginx configuration that can be used to serve Zero-TOTP. This configuration assumes the API is running on port &lt;code>8080&lt;/code> and the frontend on port &lt;code>4200&lt;/code>. Adapt the IP and port to your setup.&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">nginx.conf&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="line">&lt;span class="cl">&lt;span class="k">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">listen&lt;/span> &lt;span class="mi">80&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">server_name&lt;/span> &lt;span class="s">zero-totp.example.com&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Redirect HTTP to HTTPS
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kn">return&lt;/span> &lt;span class="mi">301&lt;/span> &lt;span class="s">https://&lt;/span>&lt;span class="nv">$host$request_uri&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">listen&lt;/span> &lt;span class="mi">443&lt;/span> &lt;span class="s">ssl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">server_name&lt;/span> &lt;span class="s">zero-totp.example.com&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># SSL configuration
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kn">ssl_certificate&lt;/span> &lt;span class="s">/path/to/your/certificate.crt&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">ssl_certificate_key&lt;/span> &lt;span class="s">/path/to/your/private.key&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Serve the API
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kn">location&lt;/span> &lt;span class="s">/api/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_pass&lt;/span> &lt;span class="s">http://127.0.1:8080/&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">Host&lt;/span> &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Real-IP&lt;/span> &lt;span class="nv">$remote_addr&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-For&lt;/span> &lt;span class="nv">$remote_addr&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Serve the frontend
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kn">location&lt;/span> &lt;span class="s">/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_pass&lt;/span> &lt;span class="s">http://127.0.1:4200&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>This is a basic configuration, make sure to adapt it to your needs. You can find more information on the &lt;a href="https://nginx.org/en/docs/" target="_blank" rel="noopener">Nginx documentation&lt;/a>. Note that nginx does not handle TLS termination by itself, you will need to use a tool like &lt;a href="https://certbot.eff.org/" target="_blank" rel="noopener">Certbot&lt;/a> to obtain and renew your SSL certificates.&lt;/p>
+&lt;h3>Reverse proxy behind Cloudflare&lt;span class="hx-absolute -hx-mt-20" id="reverse-proxy-behind-cloudflare">&lt;/span>
+&lt;a href="#reverse-proxy-behind-cloudflare" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Cloudflare adds the &lt;code>X-Forwarded-For&lt;/code> header if it does not exist, and if it does exist it will just append another IP to it. This means a client can forge their remote IP address with the most widely accepted remote IP header out of the box.&lt;/p>
+&lt;p>To prevent this, 2 solution are available:&lt;/p>
+&lt;ul>
+&lt;li>Do NOT use the &lt;code>X-Forwarded-For&lt;/code> header, but use the &lt;code>CF-Connecting-IP&lt;/code> header instead. This is the recommended solution. (See the &lt;a href="https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip" target="_blank" rel="noopener">Cloudflare documentation&lt;/a> for more information).&lt;/li>
+&lt;li>Follow this guide from &lt;a href="https://www.authelia.com/integration/proxies/forwarded-headers/" target="_blank" rel="noopener">Authelia&amp;rsquo;s team&lt;/a> to configure cloudflare to safely handle the &lt;code>X-Forwarded-For&lt;/code> header.&lt;/li>
+&lt;/ul></description></item><item><title>Setup the Zero-TOTP API</title><link>https://docs.zero-totp.com/v1.8/self-host/setup/api/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.8/self-host/setup/api/</guid><description>
+&lt;p>Zero-TOTP is configured via a yaml config file that must be mounted in the container. You can follow the volume mounting of the installation or use your own. In anyway, the config file should be located and named : &lt;code>/api/config/config.yml&lt;/code> in the API container.&lt;/p>
+&lt;p>You can download the default config file :&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bash" data-lang="Bash">&lt;span class="line">&lt;span class="cl">curl https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml --create-dirs -o ./api/config/config.yml &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>or copy the content of the &lt;a href="https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.8.0/api/config/config-example.yml" target="_blank" rel="noopener">default config file&lt;/a> and paste it in a file named &lt;code>./api/config/config.yml&lt;/code>.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Several fields are mandatory in the config file. You must fill them to make Zero-TOTP work. If fields are missing, the API will fail to start.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>Mandatory configuration fields&lt;span class="hx-absolute -hx-mt-20" id="mandatory-configuration-fields">&lt;/span>
+&lt;a href="#mandatory-configuration-fields" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Here are the list of mandatory fields you need to fill in the config file. :&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-green-200 hx-bg-green-100 hx-text-green-900 dark:hx-border-green-200/30 dark:hx-bg-green-900/30 dark:hx-text-green-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>&lt;/svg>Tip&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Only mandatory fields are listed here. For customization and understand other settings, see the &lt;a href="customization.md" >customization page&lt;/a>.&lt;/p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>This page help you to configure your &lt;code>config.yml&lt;/code> file. To ease the notation, the fields are written as 1 line. But, it is only to describe the yaml file.&lt;/p>
+&lt;p>For example, &lt;code>api.port: 8080&lt;/code> means that you have to write the following in your &lt;code>config.yml&lt;/code> file:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">api&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">8080&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Field : &lt;code>api.private_key_path&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;.secret/private.pem&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Absolute path to the API private key used to sign vaults to guarantee their authenticity. This must be a PEM encoded RSA private key. &lt;strong>If the file does not exist, it will be generated at startup.&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>api.public_key_path&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;.secret/public.pem&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: Absolute path to the API public key used to verify vaults authenticity. This must be a PEM encoded RSA public key. &lt;strong>If the file does not exist, it will be generated at startup.&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>api.flask_secret_key&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code> &lt;/code> (empty)&lt;/li>
+&lt;li>Description: A random 128 alphanumeric char string used to encrypt flask session. &lt;a href="https://tools.stchepinsky.net/token-generator?length=128" target="_blank" rel="noopener">Safe generation tool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>api.server_side_encryption_key&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code> &lt;/code> (empty)&lt;/li>
+&lt;li>Description: A random 128 alphanumeric char string used to encrypt data stored in the database that is not Encrypted by default by the ZKE flow. &lt;strong>BE CAREFULL WITHOUT THIS KEY SOME OF SAVED DATA WILL BE UNREADABLE. DO NOT LOOSE THIS KEY.&lt;/strong> &lt;a href="https://tools.stchepinsky.net/token-generator?length=128" target="_blank" rel="noopener">Safe generation tool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>environment.type&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>&amp;quot;production&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Description: This value is used to determine the logging level and security features enabling. Possible values are &amp;ldquo;local&amp;rdquo;, &amp;ldquo;development&amp;rdquo; and &amp;ldquo;production&amp;rdquo;. For security reasons, production instances should run under &lt;code>&amp;quot;production&amp;quot;&lt;/code> type.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>environment.config_version&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code>1.0&lt;/code>&lt;/li>
+&lt;li>Description: DO NOT modify this value if not prompted to do so.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>environment.domain&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code> &lt;/code> (empty)&lt;/li>
+&lt;li>Description: Domain used by your instance. This is used to enforce the security of the API. The API must be served over HTTPS. Only include the domain name, without the protocol or path. The domain MUST be the same as the one used in the frontend.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Field : &lt;code>database.database_uri&lt;/code>
+&lt;ul>
+&lt;li>Type: &lt;code>string&lt;/code>&lt;/li>
+&lt;li>Default: &lt;code> &lt;/code> (empty)&lt;/li>
+&lt;li>Description: The URI of the database to connect to. The URI must be in the format of &lt;code>&amp;quot;mysql://user:password@host:port/db_name&amp;quot;&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Setup the Zero-TOTP database</title><link>https://docs.zero-totp.com/v1.8/self-host/setup/database/</link><pubDate>Sun, 20 Jul 2025 14:38:28 +0000</pubDate><guid>https://docs.zero-totp.com/v1.8/self-host/setup/database/</guid><description>
+&lt;p>This is the final mandatory step to set up your Zero-TOTP instance. Zero-TOTP uses a MariaDB database, included in the docker-compose file. To mantain the security and integrity of your data, all the administration is delegated to the server owner. Make sure to make regular backups of your database and to secure it properly.&lt;/p>
+&lt;p>Before being able to start Zero-TOTP, you will need to set up your database.&lt;/p>
+&lt;h2>Initial database migration&lt;span class="hx-absolute -hx-mt-20" id="initial-database-migration">&lt;/span>
+&lt;a href="#initial-database-migration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>For now, your database is empty and not initialized. You will need to run the initial database migration to create the necessary tables and data. A built-in administration script is provided to help you with this task.&lt;/p>
+&lt;p>You will be able to manage crucial database operations from the API. To set up you database please :&lt;/p>
+&lt;div class="steps hx-ml-4 hx-mb-12 ltr:hx-border-l rtl:hx-border-r hx-border-gray-200 ltr:hx-pl-6 rtl:hx-pr-6 dark:hx-border-neutral-800 [counter-reset:step]">
+&lt;h3>Start your database&lt;span class="hx-absolute -hx-mt-20" id="start-your-database">&lt;/span>
+&lt;a href="#start-your-database" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose up -d database&lt;/code>&lt;/p>
+&lt;h3>Make sure the database is running and ready&lt;span class="hx-absolute -hx-mt-20" id="make-sure-the-database-is-running-and-ready">&lt;/span>
+&lt;a href="#make-sure-the-database-is-running-and-ready" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose logs database -f --tail 100&lt;/code>&lt;/p>
+&lt;h3>Start your API&lt;span class="hx-absolute -hx-mt-20" id="start-your-api">&lt;/span>
+&lt;a href="#start-your-api" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose up -d api&lt;/code>&lt;/p>
+&lt;h3>Make sure the API is asking for a migration&lt;span class="hx-absolute -hx-mt-20" id="make-sure-the-api-is-asking-for-a-migration">&lt;/span>
+&lt;a href="#make-sure-the-api-is-asking-for-a-migration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose logs api -f --tail 100&lt;/code>&lt;/p>
+&lt;p>You should see the following message&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>api | ERROR [alembic.util.messaging] Target database is not up to date.
+api | FAILED: Target database is not up to date.
+api | ❌ Your database is not up to date. Follow Zero-TOTP&amp;#39;s documentation to update it.
+api | 📚 https://docs.zero-totp.com/latest/self-host/admin/database-migration/
+api | 🕛 Docker will wait for your action to continue&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>This is expected, as the database is not yet initialized.&lt;/p>
+&lt;p>However, the API should not be crashing or throwing errors not related to database migration. If it does, please check the logs for any issues, it may be related to your configuration file or the database connection.&lt;/p>
+&lt;h3>Run the initial database migration&lt;span class="hx-absolute -hx-mt-20" id="run-the-initial-database-migration">&lt;/span>
+&lt;a href="#run-the-initial-database-migration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose exec api /bin/sh -c &amp;quot;./admin-toolbox.sh db-migrate&amp;quot;&lt;/code>&lt;/p>
+&lt;h3>Restart the API&lt;span class="hx-absolute -hx-mt-20" id="restart-the-api">&lt;/span>
+&lt;a href="#restart-the-api" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>docker compose restart api&lt;/code>&lt;/p>
+&lt;p>The API should now be healthy and ready to use. You can check the logs to make sure everything is working properly.&lt;/p>
+&lt;/div>
+&lt;p>All done ?&lt;/p>
+&lt;p>&lt;strong>You are now all set up ! 🎉🎉&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>You can just start your server &lt;code>docker compose up -d&lt;/code> and enjoy&lt;/strong>. Make sure to visit the &lt;a href="https://docs.zero-totp.com/self-host/customization/" >customization page&lt;/a> to see all the features you can configure.&lt;/p></description></item></channel></rss>

@@ -1,5 +1,5 @@
 ---
-date: 2025-07-02T18:09:59-04:00
+date: 2025-07-20T14:38:28Z
 
 title: 'Setup your reverse proxy'
 linkTitle: 1 -  Revproxy setup
