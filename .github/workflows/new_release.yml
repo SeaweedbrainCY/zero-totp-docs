@@ -35,16 +35,16 @@ jobs:
                     
             - name: Create new release if doesn't already exists
               run: | 
-                    echo "New short release version: '${{ env.zero_totp_last_short_version }}'"
-                    if [ -d zero-totp-docs/content/${{ env.zero_totp_last_short_version }} ]; then
-                        echo "Doc for version ${{ env.zero_totp_last_short_version }} already exists."
+                    new_version=$(echo ${{ env.doc_last_short_version }} | xargs)
+                    if [ -d zero-totp-docs/content/$new_version ]; then
+                        echo "Doc for version $new_version already exists."
                     else
-                        cp -r zero-totp-docs/content/${{ env.doc_last_short_version }} zero-totp-docs/content/${{ env.zero_totp_last_short_version }}
+                        cp -r zero-totp-docs/content/${{ env.doc_last_short_version }} zero-totp-docs/content/$new_version
                         find  zero-totp-docs/content/${{ env.doc_last_short_version }} -type f -exec sed -i '' -E 's|ghcr\.io/seaweedbraincy/zero-totp-frontend:[0-9]+\.[0-9]+|ghcr.io/seaweedbraincy/zero-totp-frontend:1.9|g' {} +
                         find  zero-totp-docs/content/${{ env.doc_last_short_version }} -type f -exec sed -i '' -E 's|ghcr\.io/seaweedbraincy/zero-totp-api:[0-9]+\.[0-9]+|ghcr.io/seaweedbraincy/zero-totp-api:1.9|g' {} +
                         git config user.name "github-actions[bot]"
                         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                        git tag -a "v${{ env.zero_totp_last_short_version }}.0" -m "Release version ${{ env.zero_totp_last_short_version }}.0"
-                        git push origin "v${{ env.zero_totp_last_short_version }}.0"
-                        echo "New release version v${{ env.zero_totp_last_short_version }}.0 created."
+                        git tag -a "v$new_version.0" -m "Release version $new_version.0"
+                        git push origin "v$new_version.0"
+                        echo "New release version v$new_version.0 created."
                     fi
