@@ -10,6 +10,8 @@ jobs:
     check-zero-totp-last-version:
         name: Check Zero-TOTP Last Version
         runs-on: ubuntu-latest
+        permissions:
+            contents: write  
         steps:
             - name: Check Zero-TOTP last release version
               env:
