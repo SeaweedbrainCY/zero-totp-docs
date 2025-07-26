@@ -1,0 +1,40 @@
+name: Bump new release version
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+
+jobs:
+    check-zero-totp-last-version:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check Zero-TOTP last release version
+              run: | 
+                last_version=$(gh release list --repo seaweedbraincy/zero-totp --json name,isLatest --jq '.[] | select(.isLatest)|.name')
+                echo "Last release version: $last_version"
+                echo "zero_totp_last_short_version=$(echo $last_version | sed 's/\([0-9]*\.[0-9]*\).*$/\1/') " >> $GITHUB_ENV
+
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Get last tag
+              id: get_last_tag
+              run: |
+                    last_tag=$(git describe --tags --abbrev=0)
+                    echo "Last tag: $last_tag"
+                    echo "doc_last_short_version=$(echo $last_tag | sed 's/\([0-9]*\.[0-9]*\).*$/\1/')" >> $GITHUB_ENV
+
+            - name: Create new release if doesn't alreay exists
+              run: | 
+                    if [ -d "zero-totp-docs/content/${{ env.zero_totp_last_short_version }}" ]; then
+                        echo "Doc for version ${{ env.zero_totp_last_short_version }} already exists."
+                    else
+                        cp -r zero-totp-docs/content/${{ env.doc_last_short_version }} zero-totp-docs/content/${{ env.zero_totp_last_short_version }}
+                        find  zero-totp-docs/content/${{ env.doc_last_short_version }} -type f -exec sed -i '' -E 's|ghcr\.io/seaweedbraincy/zero-totp-frontend:[0-9]+\.[0-9]+|ghcr.io/seaweedbraincy/zero-totp-frontend:1.9|g' {} +
+                        find  zero-totp-docs/content/${{ env.doc_last_short_version }} -type f -exec sed -i '' -E 's|ghcr\.io/seaweedbraincy/zero-totp-api:[0-9]+\.[0-9]+|ghcr.io/seaweedbraincy/zero-totp-api:1.9|g' {} +
+                        git config user.name "github-actions[bot]"
+                        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                        git tag 
+                    fi
