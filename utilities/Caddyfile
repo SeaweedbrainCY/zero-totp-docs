@@ -1,0 +1,7 @@
+:80 {
+    encode zstd gzip
+    root * /usr/share/caddy
+    file_server 
+    redir /self-host/ /latest/self-host/ permanent
+}
+

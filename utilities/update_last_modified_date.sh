@@ -1,4 +1,9 @@
-cd ./zero-totp-docs/content
+#! /bin/bash
+
+set -euo pipefail
+
+
+cd /src/content
 
 find . -type f -name "*.md" | while read -r file; do
   # Récupération de la date du dernier commit sur le fichier
