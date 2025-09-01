@@ -10,26 +10,38 @@ defaultContentLanguage: en
 
 menu:
   main:
+    - identifier: versions
+      name: Versions
+      weight: 1
+    - identifier: latest
+      name: Latest (v1.9)
+      pageRef: /latest/
+      parent: versions
+    - identifier: v1.8
+      name: v1.8
+      pageRef: /v1.8/
+      parent: versions
+    - identifier: v1.7
+      name: v1.7
+      pageRef: /v1.7/
+      parent: versions
     - identifier: self-host
       name: Self-hosting
-      pageRef: /latest/self-host
-      weight: 1
+      pageRef: /self-host
+      weight: 2
     - identifier: code_doc
       name: Documentation
       pageRef: /doc
-      weight: 2
-    - name: Search
       weight: 3
+    - name: Search
+      weight: 4
       params:
         type: search
     - name: GitHub
-      weight: 4
+      weight: 5
       url: "https://github.com/seaweedbraincy/zero-totp"
       params:
         icon: github
-    - identifier: v1.9
-      name: v1.9(latest)
-      url: https://docs.zero-totp.com/v1.9/
 markup:
   highlight:
     noClasses: false
