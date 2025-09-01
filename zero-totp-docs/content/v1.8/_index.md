@@ -25,7 +25,7 @@ layout: hextra-home
 </div>
 &nbsp;<br class="hx:sm:block hx:hidden" 
 <div class="hx:mb-6">
-{{< hextra/hero-button text="Get Started" link="./latest/self-host" >}}
+{{< hextra/hero-button text="Get Started" link="./self-host" >}}
 </div>
 &nbsp;<br class="hx:sm:block hx:hidden" >
 <div class="hx:mt-6"></div>

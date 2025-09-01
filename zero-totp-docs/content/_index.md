@@ -1,6 +1,5 @@
 ---
 date: 2025-07-02T18:09:59-04:00
-
 title: 'Zero-TOTP Documentation'
 ---
 

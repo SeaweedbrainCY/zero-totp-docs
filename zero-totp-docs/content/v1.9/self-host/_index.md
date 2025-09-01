@@ -1,6 +1,5 @@
 ---
 date: 2025-07-07T17:59:14-04:00
-
 title: 'Self-hosting Zero-TOTP'
 cascade:
   type: docs

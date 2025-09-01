@@ -1,6 +1,5 @@
 ---
 date: 2025-07-09T21:22:19+00:00
-
 title: 'Zero-TOTP Documentation'
 layout: hextra-home
 ---
@@ -25,7 +24,7 @@ layout: hextra-home
 </div>
 &nbsp;<br class="hx:sm:block hx:hidden" 
 <div class="hx:mb-6">
-{{< hextra/hero-button text="Get Started" link="./latest/self-host" >}}
+{{< hextra/hero-button text="Get Started" link="./self-host" >}}
 </div>
 &nbsp;<br class="hx:sm:block hx:hidden" >
 <div class="hx:mt-6"></div>
