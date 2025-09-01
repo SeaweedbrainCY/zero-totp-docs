@@ -1,4 +1,2 @@
 serve:
-	. venv/bin/activate
-	mkdocs serve
-	
+	cd zero-totp-docs && hugo server --buildDrafts --disableFastRender 
