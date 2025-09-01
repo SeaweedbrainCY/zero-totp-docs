@@ -3,5 +3,6 @@
     root * /usr/share/caddy
     file_server 
     redir /self-host/ /latest/self-host/ permanent
+    redir /self-host /latest/self-host permanent
 }
 
