@@ -65,9 +65,6 @@ jobs:
               org.opencontainers.image.documentation="https://github.com/seaweedbraincy/zero-totp-docs#readme" 
               org.opencontainers.image.vendor="Seaweedbrain" 
               org.opencontainers.image.base.name="caddy:alpine"
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
-            outputs: type=image,name=target
         
             
 
