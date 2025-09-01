@@ -1,8 +1,10 @@
 name: Deploy Zero-TOTP Documentation
 
 permissions:
-  contents: read
-  packages: write
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
 
 on:
     push:
@@ -12,7 +14,7 @@ on:
 
 
 jobs:
-    deploy:
+    Docker-Build-and-Push:
         runs-on: ubuntu-latest
         permissions:
             contents: write  
