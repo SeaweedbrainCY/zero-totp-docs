@@ -30,7 +30,7 @@ menu:
       pageRef: /self-host
       weight: 2
     - identifier: code_doc
-      name: Documentation
+      name: Code Docs
       pageRef: /doc
       weight: 3
     - name: Search
