@@ -5,7 +5,7 @@ title: 'Configuration of your Zero-TOTP instance'
 linkTitle: Configuration
 weight: 3
 cascade:
-  **Type:** docs
+  type: docs
 ---
 
 Beside mandatory fields, it is highly recommended configuring your Zero-TOTP instance to fit your needs and network architecture.
