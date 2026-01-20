@@ -18,7 +18,7 @@ menu:
       pageRef: /latest/
       parent: versions
     - identifier: v1.9
-      name: Latest (v1.9)
+      name:  v1.9
       pageRef: /v1.9/
       parent: versions
     - identifier: v1.8
