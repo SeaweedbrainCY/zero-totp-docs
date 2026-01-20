@@ -8,7 +8,7 @@ cascade:
   type: blog
 ---
 
-Zero-TOTP v1.12 introduces important change regarding the session management. Self-hoster should review those modification before upgrading.
+Zero-TOTP v1.12 introduces important changes regarding the session management. Self-hoster should review those modifications before upgrading.
 
 <!--more-->
 
