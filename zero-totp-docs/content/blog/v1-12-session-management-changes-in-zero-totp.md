@@ -23,10 +23,13 @@ Zero-TOTP v1.12 introduces important change regarding the session management. Se
 
 ---
 
-> ⚠️ **Important notice for self-hosted instances**  
-> This release introduces a **significant change to the default session behavior** of Zero-TOTP.  
-> While it greatly improves user experience, it also **changes the effective authentication lifetime by default**.  
-> Self-hosters **must review and adjust their configuration** if the new defaults do not align with their security requirements.
+{{< callout type="warning" >}}
+⚠️ **Important notice for self-hosted instances**  
+This release introduces a **significant change to the default session behavior** of Zero-TOTP.  
+While it greatly improves user experience, it also **changes the effective authentication lifetime by default**.  
+Self-hosters **must review and adjust their configuration** if the new defaults do not align with their security requirements.
+{{< /callout >}}
+> 
 
 ---
 
