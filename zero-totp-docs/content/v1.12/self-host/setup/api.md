@@ -27,7 +27,7 @@ Here are the list of mandatory fields you need to fill in the config file.  :
 
 
 > [!tip]
-> Only mandatory fields are listed here. For precise configuration and understand other settings, see the [configuration page](customization.md).
+> Only mandatory fields are listed here. For precise configuration and understand other settings, see the [configuration page](./customization.md).
 > Some security features can also be defined 
 
 > [!important]
