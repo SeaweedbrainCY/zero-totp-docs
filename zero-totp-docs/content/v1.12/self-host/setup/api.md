@@ -15,9 +15,9 @@ Zero-TOTP is configured via a yaml config file that must be mounted in the conta
 
 You can download the default config file :
 ```Bash
-curl https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.9.0/api/config/config-example.yml  --create-dirs  -o ./api/config/config.yml 
+curl https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.12.0/api/config/config-example.yml  --create-dirs  -o ./api/config/config.yml 
 ```
-or copy the content of the [default config file](https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.9.0/api/config/config-example.yml) and paste it in a file named `./api/config/config.yml`.
+or copy the content of the [default config file](https://raw.githubusercontent.com/SeaweedbrainCY/zero-totp/refs/tags/v1.12.0/api/config/config-example.yml) and paste it in a file named `./api/config/config.yml`.
 
 > [!note]
 >  Several fields are mandatory in the config file. You must fill them to make Zero-TOTP work. If fields are missing, the API will fail to start.

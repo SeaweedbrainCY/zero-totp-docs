@@ -13,9 +13,13 @@ menu:
     - identifier: versions
       name: Versions
       weight: 1
-    - identifier: latest
-      name: Latest (v1.9)
+    - identifier: v1.12
+      name: Latest (v1.12)
       pageRef: /latest/
+      parent: versions
+    - identifier: v1.9
+      name: Latest (v1.9)
+      pageRef: /v1.9/
       parent: versions
     - identifier: v1.8
       name: v1.8
